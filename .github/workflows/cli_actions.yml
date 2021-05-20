@@ -133,6 +133,7 @@ jobs:
         run: |
           gh release delete cli-snapshot -y
           git push --delete origin cli-snapshot
+        continue-on-error: true
 
       - name: Create release
         run: gh release create cli-snapshot metrics/cli/cli_macos metrics/cli/cli_macos.sha256 metrics/cli/cli_linux metrics/cli/cli_linux.sha256 --prerelease --title 'CLI snapshot'
