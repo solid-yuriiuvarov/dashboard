@@ -135,7 +135,7 @@ jobs:
           git push --delete origin cli-snapshot
 
       - name: Create release
-        run: gh release create cli-snapshot metrics/cli/cli_macos metrics/cli/cli_macos.sha256 metrics/cli/cli_linux metrics/cli/cli_linux.sha256 --prerelease --title 'CI Integrations snapshot'
+        run: gh release create cli-snapshot metrics/cli/cli_macos metrics/cli/cli_macos.sha256 metrics/cli/cli_linux metrics/cli/cli_linux.sha256 --prerelease --title 'CLI snapshot'
 
   send-notification:
     name: Send notification to Slack
