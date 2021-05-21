@@ -89,9 +89,9 @@ jobs:
     needs: [ cli-build-actions ]
     runs-on: ubuntu-latest
     env:
-      LINUX_BUILD_NAME: metrics_cli_linux
-      MACOS_BUILD_NAME: metrics_cli_macos
-      SNAPSHOT_NAME : metrics-cli-snapshot
+      LINUX_BUILD_NAME: "metrics_cli_linux"
+      MACOS_BUILD_NAME: "metrics_cli_macos"
+      SNAPSHOT_NAME : "metrics-cli-snapshot"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
