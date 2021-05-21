@@ -6,6 +6,10 @@ on:
     paths:
       - metrics/cli/**
 
+env:
+  LINUX_BUILD_NAME: "metrics_cli_linux"
+  MACOS_BUILD_NAME: "metrics_cli_macos"
+
 jobs:
   cli-actions:
     name: CLI Actions
@@ -44,9 +48,9 @@ jobs:
         os: [ macos-latest, ubuntu-latest ]
         include:
           - os: macos-latest
-            output_name: "metrics_cli_macos"
+            output_name: ${{ env.MACOS_BUILD_NAME }}
           - os: ubuntu-latest
-            output_name: "metrics_cli_linux"
+            output_name: ${{ env.LINUX_BUILD_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -89,9 +93,7 @@ jobs:
     needs: [ cli-build-actions ]
     runs-on: ubuntu-latest
     env:
-      LINUX_BUILD_NAME: "metrics_cli_linux"
-      MACOS_BUILD_NAME: "metrics_cli_macos"
-      SNAPSHOT_NAME : "metrics-cli-snapshot"
+      TAG_NAME : "metrics-cli-snapshot"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -135,12 +137,12 @@ jobs:
 
       - name: Delete release
         run: |
-          gh release delete cli-snapshot -y
+          gh release delete ${{ env.TAG_NAME }} -y
           git push --delete origin cli-snapshot
         continue-on-error: true
 
       - name: Create release
-        run: gh release create ${{ env.SNAPSHOT_NAME }} metrics/cli/${{ env.MACOS_BUILD_NAME }} metrics/cli/${{ env.MACOS_BUILD_NAME }}.sha256 metrics/cli/${{ env.LINUX_BUILD_NAME }} metrics/cli/${{ env.LINUX_BUILD_NAME }}.sha256 --prerelease --title 'Metrics CLI snapshot'
+        run: gh release create ${{ env.TAG_NAME }} metrics/cli/${{ env.MACOS_BUILD_NAME }} metrics/cli/${{ env.MACOS_BUILD_NAME }}.sha256 metrics/cli/${{ env.LINUX_BUILD_NAME }} metrics/cli/${{ env.LINUX_BUILD_NAME }}.sha256 --prerelease --title 'Metrics CLI snapshot'
 
   send-notification:
     name: Send notification to Slack
