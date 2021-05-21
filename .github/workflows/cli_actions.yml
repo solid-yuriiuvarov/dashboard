@@ -112,25 +112,25 @@ jobs:
       - name: Download MacOS Build
         uses: actions/download-artifact@v2
         with:
-          name: ${{ MACOS_BUILD_NAME }}
+          name: $MACOS_BUILD_NAME
           path: metrics/cli/
 
       - name: Download Linux Build
         uses: actions/download-artifact@v2
         with:
-          name: ${{ LINUX_BUILD_NAME }}
+          name: $LINUX_BUILD_NAME
           path: metrics/cli/
 
       - name: Download Linux SHA256 Hash
         uses: actions/download-artifact@v2
         with:
-          name: ${{ LINUX_BUILD_NAME }}.sha256
+          name: $LINUX_BUILD_NAME.sha256
           path: metrics/cli/
 
       - name: Download MacOS SHA256 Hash
         uses: actions/download-artifact@v2
         with:
-          name: ${{ MACOS_BUILD_NAME }}.sha256
+          name: $MACOS_BUILD_NAME.sha256
           path: metrics/cli/
 
       - name: Delete release
@@ -140,7 +140,7 @@ jobs:
         continue-on-error: true
 
       - name: Create release
-        run: gh release create ${{ SNAPSHOT_NAME }} metrics/cli/${{ MACOS_BUILD_NAME }} metrics/cli/${{ MACOS_BUILD_NAME }}.sha256 metrics/cli/${{ LINUX_BUILD_NAME }} metrics/cli/${{ LINUX_BUILD_NAME }}.sha256 --prerelease --title 'Metrics CLI snapshot'
+        run: gh release create $SNAPSHOT_NAME metrics/cli/$MACOS_BUILD_NAME metrics/cli/$MACOS_BUILD_NAME.sha256 metrics/cli/$LINUX_BUILD_NAME metrics/cli/$LINUX_BUILD_NAME.sha256 --prerelease --title 'Metrics CLI snapshot'
 
   send-notification:
     name: Send notification to Slack
