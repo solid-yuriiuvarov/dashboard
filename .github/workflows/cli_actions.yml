@@ -36,7 +36,7 @@ jobs:
         working-directory: metrics/cli/
 
   cli-build-actions:
-    name: CLI Build Actions
+    name: Metrics CLI Build Actions
     needs: [ cli-actions ]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -44,9 +44,9 @@ jobs:
         os: [ macos-latest, ubuntu-latest ]
         include:
           - os: macos-latest
-            output_name: "cli_macos"
+            output_name: "metrics_cli_macos"
           - os: ubuntu-latest
-            output_name: "cli_linux"
+            output_name: "metrics_cli_linux"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -85,9 +85,13 @@ jobs:
           if-no-files-found: error
 
   cli-publish-actions:
-    name: CLI Publish Actions
+    name: Metrics CLI Publish Actions
     needs: [ cli-build-actions ]
     runs-on: ubuntu-latest
+    env:
+      LINUX_BUILD_NAME: metrics_cli_linux
+      MACOS_BUILD_NAME: metrics_cli_macos
+      SNAPSHOT_NAME : metrics-cli-snapshot
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -108,25 +112,25 @@ jobs:
       - name: Download MacOS Build
         uses: actions/download-artifact@v2
         with:
-          name: cli_macos
+          name: ${{ MACOS_BUILD_NAME }}
           path: metrics/cli/
 
       - name: Download Linux Build
         uses: actions/download-artifact@v2
         with:
-          name: cli_linux
+          name: ${{ LINUX_BUILD_NAME }}
           path: metrics/cli/
 
       - name: Download Linux SHA256 Hash
         uses: actions/download-artifact@v2
         with:
-          name: cli_linux_sha256
+          name: ${{ LINUX_BUILD_NAME }}.sha256
           path: metrics/cli/
 
       - name: Download MacOS SHA256 Hash
         uses: actions/download-artifact@v2
         with:
-          name: cli_macos_sha256
+          name: ${{ MACOS_BUILD_NAME }}.sha256
           path: metrics/cli/
 
       - name: Delete release
@@ -136,7 +140,7 @@ jobs:
         continue-on-error: true
 
       - name: Create release
-        run: gh release create cli-snapshot metrics/cli/cli_macos metrics/cli/cli_macos.sha256 metrics/cli/cli_linux metrics/cli/cli_linux.sha256 --prerelease --title 'CLI snapshot'
+        run: gh release create ${{ SNAPSHOT_NAME }} metrics/cli/${{ MACOS_BUILD_NAME }} metrics/cli/${{ MACOS_BUILD_NAME }}.sha256 metrics/cli/${{ LINUX_BUILD_NAME }} metrics/cli/${{ LINUX_BUILD_NAME }}.sha256 --prerelease --title 'Metrics CLI snapshot'
 
   send-notification:
     name: Send notification to Slack
