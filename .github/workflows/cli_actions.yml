@@ -73,7 +73,7 @@ jobs:
       - name: Upload SHA256 Hash
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.output_name }}_sha256
+          name: ${{ matrix.output_name }}.sha256
           path: metrics/cli/${{ matrix.output_name }}.sha256
           if-no-files-found: error
 
