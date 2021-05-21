@@ -124,13 +124,13 @@ jobs:
       - name: Download Linux SHA256 Hash
         uses: actions/download-artifact@v2
         with:
-          name: $${{ env.LINUX_BUILD_NAME }}.sha256
+          name: "$${{ env.LINUX_BUILD_NAME }}.sha256"
           path: metrics/cli/
 
       - name: Download MacOS SHA256 Hash
         uses: actions/download-artifact@v2
         with:
-          name: ${{ env.MACOS_BUILD_NAME }}.sha256
+          name: "${{ env.MACOS_BUILD_NAME }}.sha256"
           path: metrics/cli/
 
       - name: Delete release
