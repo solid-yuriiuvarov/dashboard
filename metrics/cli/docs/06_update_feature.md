@@ -212,12 +212,12 @@ Metrics CLI.
 Usage: metrics <command> [arguments]
 
 Global options:
-\-h, --help    Print this usage information.
+ -h, --help    Print this usage information.
 
 Available commands:
   deploy   Creates GCloud and Firebase projects for Metrics components and deploys the Metrics Web Application.
   doctor   Shows the version information of the third-party dependencies.
-"!+  update   Updates the Metrics components and redeploys the Metrics Web Application to the Firebase project. +!"
++  update   Updates the Metrics components and redeploys the Metrics Web Application to the Firebase project. +
 
 Run "metrics help <command>" for more information about a command.
 ```
